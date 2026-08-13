@@ -19,7 +19,7 @@ Last Updated: Phase 1 (Planning)
 | M1.1 | Ingest and serve ~300K rows from Excel dataset | `etl/scripts/load_data.py` | ETL runs without error; rows match in DB | `[x]` |
 | M1.2 | Decide and document data ingestion strategy (file/DB/ETL/cache) | `README.md` → Architecture section | README contains decision rationale | `[ ]` |
 | M1.3 | Explain trade-offs of chosen ingestion approach | `README.md` → Trade-offs section | Trade-offs documented in README | `[ ]` |
-| M1.4 | Browser must NOT receive all 300K raw records | FastAPI endpoints (aggregated responses) | API responses never return all rows unfiltered | `[ ]` |
+| M1.4 | Browser must NOT receive all 300K raw records | FastAPI endpoints (aggregated responses) | API responses never return all rows unfiltered | `[x]` |
 
 ---
 
@@ -109,7 +109,7 @@ Last Updated: Phase 1 (Planning)
 |-------|-------------|--------|
 | Phase 1 | Dataset inspection + assessment analysis + architecture planning | `[x]` |
 | Phase 2 | Project foundation + Polars ETL + PostgreSQL | `[x]` |
-| Phase 3 | FastAPI backend + analytics endpoints | `[ ]` |
+| Phase 3 | FastAPI backend + analytics endpoints | `[x]` |
 | Phase 4 | React/Vite frontend + InsightDesk UI | `[ ]` |
 | Phase 5 | Dashboard + charts + filters + tables | `[ ]` |
 | Phase 6 | Reports/export + responsive design | `[ ]` |

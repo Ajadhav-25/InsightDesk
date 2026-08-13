@@ -19,3 +19,4 @@ class CommonFilters:
     category:   Optional[str] = Query(None, description="Filter by menu category")
     order_type: Optional[str] = Query(None, description="Filter by order type: Dine-In, Takeaway, Delivery")
     settlement: Optional[str] = Query(None, description="Filter by settlement type")
+    brand:      Optional[str] = Query(None, description="Filter by brand")

@@ -24,11 +24,11 @@ app.add_middleware(
 )
 
 # ─── Routers (registered in Phase 3) ─────────────────────────────────────────
-# from app.api import dashboard, analytics, orders, filters
-# app.include_router(dashboard.router, prefix="/api")
-# app.include_router(analytics.router, prefix="/api/analytics")
-# app.include_router(orders.router, prefix="/api")
-# app.include_router(filters.router, prefix="/api")
+from app.api import dashboard, analytics, orders, filters
+app.include_router(dashboard.router, prefix="/api")
+app.include_router(analytics.router, prefix="/api/analytics")
+app.include_router(orders.router, prefix="/api")
+app.include_router(filters.router, prefix="/api")
 
 
 @app.get("/api/health")
