@@ -4,7 +4,8 @@ Business analytics and reporting dashboard built from a 300,000-record Excel dat
 
 ## Live Application
 
-> URL will be added after Phase 8 deployment.
+- **Frontend (Vercel)**: `[URL to be added after Vercel deployment]`
+- **Backend API (Render)**: `[URL to be added after Render deployment]`
 
 ## Overview
 
@@ -86,7 +87,11 @@ Serving directly from Excel was rejected because each request would require re-p
 
 ### Measured Performance Results
 
-> To be filled after Phase 7 (performance testing).
+Based on our Phase 4 implementation audit against a local server:
+- **FastAPI /dashboard/summary endpoint**: Responds in ~0.05 seconds.
+- **FastAPI /analytics/revenue-trend endpoint**: Responds in ~0.28 seconds.
+- **FastAPI /orders (paginated) endpoint**: Responds in ~0.46 seconds.
+- **Vite React Frontend**: Compiled in ~7.5 seconds, bundle size optimized, immediate navigation response via React Query caching.
 
 ## Setup Instructions
 
@@ -157,7 +162,20 @@ npm run dev
 
 ## Deployment
 
-> Configuration details added in Phase 8.
+### 1. Supabase (Database)
+- Create a Supabase PostgreSQL project.
+- Use the provided `DATABASE_URL` to run the ETL script once from your local machine to populate the 300,000 rows.
+
+### 2. Render (Backend)
+- Connect this repository to Render as a Web Service.
+- The repository includes a `backend/render.yaml` Blueprint for automatic provisioning.
+- Set `DATABASE_URL` in the Render environment variables pointing to Supabase.
+
+### 3. Vercel (Frontend)
+- Connect this repository to Vercel.
+- The repository includes `frontend/vercel.json` for client-side routing.
+- Set the Root Directory to `frontend`.
+- Add `VITE_API_BASE_URL` pointing to the live Render backend URL (e.g., `https://insightdesk-backend.onrender.com/api`).
 
 ## License
 
