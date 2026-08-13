@@ -208,6 +208,20 @@ Supabase PostgreSQL
 GitHub:
 [https://github.com/Ajadhav-25/InsightDesk](https://github.com/Ajadhav-25/InsightDesk)
 
+
+## Scrennshots
+<img width="1306" height="793" alt="image" src="https://github.com/user-attachments/assets/6b6466fd-ab8c-492c-a77b-03df05af0b30" />
+<br><br>
+<img width="1394" height="847" alt="image" src="https://github.com/user-attachments/assets/49100ae2-80d4-45b8-be56-348a81e498d4" />
+<br><br>
+<img width="1458" height="836" alt="image" src="https://github.com/user-attachments/assets/ba3ad061-5b3c-4d9a-8ba0-655a3466732e" />
+<br><br>
+<img width="1524" height="856" alt="image" src="https://github.com/user-attachments/assets/18aa702a-3584-4017-a634-2b71b17bfadb" />
+<br><br>
+<img width="1396" height="852" alt="image" src="https://github.com/user-attachments/assets/63678323-a87e-4eb0-be61-ebe5d5e01732" />
+
+
+
 ## Submission
 
 - **GitHub Repository**: [InsightDesk](https://github.com/Ajadhav-25/InsightDesk)
