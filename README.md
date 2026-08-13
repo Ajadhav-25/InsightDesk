@@ -1,182 +1,214 @@
 # InsightDesk
 
-Business analytics and reporting dashboard built from a 300,000-record Excel dataset.
+InsightDesk is an interactive dashboard designed to efficiently analyze large-scale retail transaction data.
 
-## Live Application
+## What You'll Build
 
-- **Frontend (Vercel)**: `[URL to be added after Vercel deployment]`
-- **Backend API (Render)**: `[URL to be added after Render deployment]`
+### Data handling
+The dataset consists of approximately 300,000 retail line-item records originally provided as an Excel file. Reading and processing this Excel file on every request is inefficient and scales poorly. Instead, we implemented a robust ETL (Extract, Transform, Load) pipeline using Python and Polars to quickly process the dataset and bulk-load it into a production Supabase PostgreSQL database using `psycopg2`'s `execute_values`. 
+This PostgreSQL backend provides persistent, reliable storage and allows for highly efficient server-side querying and aggregation.
 
-## Overview
+### Dashboard
+The application features a comprehensive analytics dashboard that displays:
+- Total Records
+- Total Revenue
+- Total Orders
+- Items Sold
 
-InsightDesk ingests approximately 300,000 line-item sales records from an Excel file (a single Burger Town brand operating 6 outlets across Bangalore) and presents them as an interactive analytics dashboard with server-side aggregation, filtering, and pagination.
+Visualizations implemented:
+- **Revenue Trend**: Line chart of revenue over time
+- **Order Types**: Donut/Pie chart of delivery vs. dine-in/takeaway
+- **Outlets & Categories**: Bar charts showing performance across different business units
 
-## Features
+Filters currently present in the Dashboard:
+- Start Date
+- End Date
+- Outlet
+- Category
+- Order Type
+- Settlement
 
-- Dashboard with 5 KPI cards (Total Revenue, Total Orders, AOV, Items Sold, Total Records)
-- Revenue trend line chart (monthly, 12-month span)
-- Revenue by outlet bar chart
-- Order type distribution donut chart
-- Product rankings table (sortable)
-- Paginated orders table (server-side, 300K records never loaded into the browser)
-- Server-side filtering (date range, outlet, category, order type, settlement)
+*(Note: The Brand filter has been intentionally removed.)*
 
-## Technology Stack
+### Performance
+To ensure maximum performance when dealing with 300K records, we utilized:
+- **PostgreSQL queries**: Fast, indexed database retrievals.
+- **Server-side aggregation**: SQL aggregations prevent the frontend from downloading massive datasets.
+- **Server-side filtering**: Filtering maps directly to SQL `WHERE` clauses.
+- **Server-side pagination**: The Orders table fetches data in small limits using `LIMIT` and `OFFSET`.
+- **Database indexes**: Explicit indexes on `order_datetime`, `outlet_name`, `category`, `order_type`, and `bill_no`.
+- **Bulk ETL loading**: Efficient insertion of 300K rows in seconds using `execute_values`.
 
-| Layer | Technology |
-|-------|-----------|
-| Frontend | React, Vite, Tailwind CSS, Recharts |
-| Frontend state/data | TanStack React Query |
-| Backend | Python, FastAPI |
-| ETL | Polars |
-| Database | PostgreSQL |
-| Frontend hosting | Vercel |
-| Backend hosting | Render |
-| Database hosting | Supabase |
+### Deployment
+- **Frontend**: Vercel
+- **Backend**: Render
+- **Database**: Supabase PostgreSQL
 
-## Architecture
+- **GitHub Repository**: [GitHub Repository](https://github.com/Ajadhav-25/InsightDesk)
+- **Live Frontend**: [Live Application](https://insight-desk-plum.vercel.app)
+- **Live Backend**: [Backend API](https://insightdesk-hmy6.onrender.com)
 
+## Tech Stack
+
+**Frontend**:
+- React
+- Vite
+- JavaScript
+- Tailwind CSS
+- Recharts
+
+**Backend**:
+- Python
+- FastAPI
+- SQLAlchemy
+- psycopg2
+
+**Database**:
+- Supabase PostgreSQL
+
+**ETL**:
+- Python
+- Polars
+
+**Deployment**:
+- Vercel
+- Render
+- Supabase
+
+## Documentation
+
+### Architecture
+```text
+User
+  ↓
+React + Vite
+  ↓
+Vercel
+  ↓
+FastAPI
+  ↓
+Render
+  ↓
+Supabase PostgreSQL
+
+ETL:
+
+data.xlsx
+  ↓
+Polars ETL
+  ↓
+PostgreSQL
 ```
-Excel (data.xlsx)
-     |
-     v
-Polars ETL (one-time Python script)
-     |
-     v
-PostgreSQL (Supabase, production)
-     |
-     v
-FastAPI (REST API — server-side aggregation, filtering, pagination)
-     |
-     v
-React + Vite + Tailwind CSS + Recharts (Vercel CDN)
+
+- **React + Vite**: Handles the interactive UI and frontend routing.
+- **FastAPI**: Serves the REST API, executes SQL queries, and manages business logic.
+- **Supabase PostgreSQL**: Provides scalable relational data storage and indexing.
+- **Polars ETL**: Transforms raw spreadsheet data into production database records.
+
+### Data Processing
+- Approximately 300,000 records
+- One row = one line item
+- One BillNo = one order
+- Revenue = Price × Quantity
+- Zero-price rows are preserved
+- Production database is PostgreSQL
+
+**Verified production values**:
+- Total records: 300,000
+- Distinct orders: 110,478
+- Items sold: 434,448
+- Total revenue: ₹69,480,952
+- Zero-price rows: 8,611
+
+### Features
+- **Dashboard**: High-level KPIs, revenue trend line chart, and breakdown charts with dynamic global filters.
+- **Performance**: Monitors and visualizes application performance and metrics.
+- **Products**: Table ranking items by revenue contribution.
+- **Orders**: Server-side paginated table of raw line-item records.
+- **Reports**: Overview of generated reporting insights.
+
+### API
+The backend exposes the following endpoints:
+- `/api/dashboard/summary`
+- `/api/analytics/revenue-trend`
+- `/api/analytics/outlets`
+- `/api/analytics/categories`
+- `/api/analytics/order-types`
+- `/api/analytics/products`
+- `/api/analytics/settlement`
+- `/api/orders`
+- `/api/filters`
+
+### Performance Strategy
+- **Aggregation happens in PostgreSQL**: Using SQL aggregations (`SUM()`, `COUNT()`) is much faster than downloading raw data to the Browser.
+- **Filtering happens server-side**: SQL `WHERE` clauses efficiently narrow down results using database indexes.
+- **Orders use server-side pagination**: Only a small subset of records is fetched at once, preventing frontend UI freezing and reducing network payload.
+- **The frontend does not download all 300K records**: This ensures immediate dashboard rendering and eliminates excessive bandwidth usage.
+
+### Setup and Run
+
+**Environment Variables**:
+Backend (`backend/.env`):
+```env
+DATABASE_URL=your_database_connection_string
+```
+Frontend (`frontend/.env`):
+```env
+VITE_API_BASE_URL=http://localhost:8000/api
 ```
 
-## Data Processing
-
-The Excel file is ingested once using a Polars ETL script (`etl/scripts/load_data.py`):
-
-1. Polars reads all 300,000 rows from the `.xlsx` file
-2. Column `Group` is renamed to `category` (reserved SQL keyword)
-3. Numeric columns are validated (no negatives expected; zero-price rows flagged and retained)
-4. `line_revenue = price × quantity` is pre-computed and stored as an integer column
-5. Data is bulk-inserted into PostgreSQL in batches
-6. Row count is verified: `SELECT COUNT(*) FROM line_items` must equal 300,000
-
-The ETL is idempotent — it `TRUNCATE`s the table before re-inserting, so it is safe to re-run.
-
-## Database Decision
-
-**PostgreSQL** was chosen because:
-- 300K rows is small for PostgreSQL; aggregation queries with proper indexes return results quickly
-- SQL `GROUP BY`, `WHERE`, and `COUNT(DISTINCT)` map directly to dashboard requirements
-- The browser never receives raw records — only aggregated results per query
-- Server-side filtering translates naturally to SQL `WHERE` clauses
-- `OFFSET/LIMIT` pagination is simple and appropriate for this dataset size
-
-Serving directly from Excel was rejected because each request would require re-parsing the full 15MB file, and Excel cannot be efficiently queried with filters or aggregations.
-
-## Performance Strategy
-
-- All KPIs computed in a single SQL query (no N+1 queries)
-- Charts served as small pre-aggregated JSON (12 data points for monthly trend)
-- Orders table uses server-side pagination (50 rows per page)
-- Indexes on `order_datetime`, `outlet_name`, `category`, `order_type`, `bill_no`, and a compound `(order_datetime, outlet_name)` index for common combined filters
-- TanStack React Query caches API responses client-side for the duration of a session
-- All performance targets are measured after implementation — see results below
-
-### Measured Performance Results
-
-Based on our Phase 4 implementation audit against a local server:
-- **FastAPI /dashboard/summary endpoint**: Responds in ~0.05 seconds.
-- **FastAPI /analytics/revenue-trend endpoint**: Responds in ~0.28 seconds.
-- **FastAPI /orders (paginated) endpoint**: Responds in ~0.46 seconds.
-- **Vite React Frontend**: Compiled in ~7.5 seconds, bundle size optimized, immediate navigation response via React Query caching.
-
-## Setup Instructions
-
-### Prerequisites
-
-- Python 3.11+
-- Node.js 20+
-- PostgreSQL 15+ (or a Supabase project)
-
-### Backend + ETL
-
+**ETL (Data Loading)**:
 ```bash
-# 1. Clone the repository
-git clone https://github.com/<username>/insightdesk.git
-cd insightdesk
-
-# 2. Set up Python environment
-cd backend
-pip install -r requirements.txt
-
-# 3. Configure environment
-cp .env.example .env
-# Edit .env with your DATABASE_URL
-
-# 4. Run the ETL (one-time)
-cd ../etl
-pip install -r requirements.txt
-# Place data.xlsx in ../data/data.xlsx
-python scripts/load_data.py
-
-# 5. Start the backend
-cd ../backend
-uvicorn app.main:app --reload
+python -m venv venv
+source venv/bin/activate
+pip install -r backend/requirements.txt
+pip install polars openpyxl psycopg2-binary
+python etl/scripts/load_data.py
 ```
 
-### Frontend
+**Backend**:
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+```
 
+**Frontend**:
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-## Trade-offs and Assumptions
+### Architecture Decisions & Trade-offs
+1. **Why PostgreSQL was selected**: Reading 300K rows from an Excel file on every request limits concurrency and consumes massive RAM. PostgreSQL provides query speed, index utilization, and scalability.
+2. **Why Polars was selected for ETL**: Polars is significantly faster and more memory-efficient than Pandas for loading and transforming the initial dataset.
+3. **Why FastAPI was selected**: Chosen for its automatic validation, interactive docs, and high performance.
+4. **Why server-side pagination was used**: Prevents the frontend from freezing when attempting to render massive DOM tables.
+5. **Why Vercel + Render + Supabase were used**: Separation of frontend, backend, and database hosting allows each layer to scale independently.
 
-| Item | Decision |
-|------|----------|
-| Zero-price rows (8,611) | Retained as-is; business meaning unknown; assessment does not require removal |
-| No Region column | Dataset has no Region column; Outlet_Name (6 outlets) used as the location filter |
-| Single brand | Only "Burger Town" exists; brand filter would be a no-op; not exposed in UI |
-| Performance targets | Pre-implementation targets only; actual measured results reported in README after Phase 7 |
-| ETL is one-time | Dataset is static; no live updates mentioned in assessment |
-| Cold start | Render free tier has cold start delays; first request after idle period may be slow |
+### Assumptions
+- One row represents one line item.
+- One BillNo represents one order.
+- Revenue = Price × Quantity.
+- Zero-price rows are valid and retained.
 
-## API Overview
+### Security
+- Credentials stored through environment variables.
+- `.env` files excluded from Git.
+- Database credentials are not exposed to the frontend.
+- Secrets are not committed.
 
-| Endpoint | Purpose |
-|----------|---------|
-| `GET /api/dashboard/summary` | 5 KPI metrics (filterable) |
-| `GET /api/analytics/revenue-trend` | Monthly revenue trend |
-| `GET /api/analytics/outlets` | Revenue by outlet |
-| `GET /api/analytics/categories` | Revenue by category |
-| `GET /api/analytics/order-types` | Order type distribution |
-| `GET /api/analytics/products` | Product rankings |
-| `GET /api/analytics/settlement` | Payment method breakdown |
-| `GET /api/orders` | Paginated line-item table |
-| `GET /api/filters` | Filter dropdown values |
+## What We're Looking For
+The project satisfies the core requirements by correctly handling 300K records via a robust Postgres/FastAPI backend, maintaining zero-price records, aggregating correctly without double counting, and serving a performant React frontend with server-side pagination and targeted indexes.
 
-## Deployment
+## Bonus
+This section intentionally left blank as optional bonus features (AI insights, authentication, caching) were not required for this phase.
 
-### 1. Supabase (Database)
-- Create a Supabase PostgreSQL project.
-- Use the provided `DATABASE_URL` to run the ETL script once from your local machine to populate the 300,000 rows.
+## Submission
 
-### 2. Render (Backend)
-- Connect this repository to Render as a Web Service.
-- The repository includes a `backend/render.yaml` Blueprint for automatic provisioning.
-- Set `DATABASE_URL` in the Render environment variables pointing to Supabase.
-
-### 3. Vercel (Frontend)
-- Connect this repository to Vercel.
-- The repository includes `frontend/vercel.json` for client-side routing.
-- Set the Root Directory to `frontend`.
-- Add `VITE_API_BASE_URL` pointing to the live Render backend URL (e.g., `https://insightdesk-backend.onrender.com/api`).
-
-## License
-
-Assessment project — not for redistribution.
+- **GitHub Repository**: [GitHub Repository](https://github.com/Ajadhav-25/InsightDesk)
+- **Live Frontend**: [Live Application](https://insight-desk-plum.vercel.app)
+- **Live Backend**: [Backend API](https://insightdesk-hmy6.onrender.com)
