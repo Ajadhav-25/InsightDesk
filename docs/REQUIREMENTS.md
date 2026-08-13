@@ -27,11 +27,11 @@ Last Updated: Phase 1 (Planning)
 
 | # | Requirement | Implementation Location | Verification Method | Status |
 |---|-------------|------------------------|---------------------|--------|
-| M2.1 | Summary metrics: total records | `frontend/src/pages/Dashboard.jsx` → KPI cards | KPI card shows 300,000 | `[ ]` |
-| M2.2 | Summary metrics: key KPIs (revenue, orders, AOV, items sold) | `frontend/src/pages/Dashboard.jsx` → KPI cards | All KPI cards render correct values | `[ ]` |
-| M2.3 | Aggregated statistics displayed | Dashboard + Performance pages | Stats match DB-computed aggregations | `[ ]` |
-| M2.4 | At least TWO types of visualization (bar, line, pie, trend) | Dashboard page (bar + line at minimum) | Two distinct chart types rendered | `[ ]` |
-| M2.5 | Filtering relevant to the data (date range, category, outlet/location, order type/settlement) | Filter components in Dashboard, Performance, Products, Orders pages | Server-side filters applied; results change when filters are applied | `[ ]` |
+| M2.1 | Summary metrics: total records | `frontend/src/pages/Dashboard.jsx` → KPI cards | KPI card shows 300,000 | `[x]` |
+| M2.2 | Summary metrics: key KPIs (revenue, orders, AOV, items sold) | `frontend/src/pages/Dashboard.jsx` → KPI cards | All KPI cards render correct values | `[x]` |
+| M2.3 | Aggregated statistics displayed | Dashboard + Performance pages | Stats match DB-computed aggregations | `[x]` |
+| M2.4 | At least TWO types of visualization (bar, line, pie, trend) | Dashboard page (bar + line at minimum) | Two distinct chart types rendered | `[x]` |
+| M2.5 | Filtering relevant to the data (date range, category, outlet/location, order type/settlement) | Filter components in Dashboard, Performance, Products, Orders pages | Server-side filters applied; results change when filters are applied | `[x]` |
 
 ---
 
@@ -39,9 +39,9 @@ Last Updated: Phase 1 (Planning)
 
 | # | Requirement | Implementation Location | Verification Method | Status |
 |---|-------------|------------------------|---------------------|--------|
-| M3.1 | Reasonable page load times | FastAPI + PostgreSQL indexes + frontend | LCP < 3s under normal conditions | `[ ]` |
-| M3.2 | Efficient queries | PostgreSQL with indexes; server-side aggregation | Query explain plans show index usage | `[ ]` |
-| M3.3 | Smooth overall user experience | Frontend loading/error/empty states | No UI freezes; loading spinners present | `[ ]` |
+| M3.1 | Reasonable page load times | FastAPI + PostgreSQL indexes + frontend | LCP < 3s under normal conditions | `[x]` |
+| M3.2 | Efficient queries | PostgreSQL with indexes; server-side aggregation | Query explain plans show index usage | `[x]` |
+| M3.3 | Smooth overall user experience | Frontend loading/error/empty states | No UI freezes; loading spinners present | `[x]` |
 
 ---
 
@@ -93,10 +93,10 @@ Last Updated: Phase 1 (Planning)
 
 | # | Bonus Feature | Status |
 |---|---------------|--------|
-| B1 | Advanced filtering (beyond date/category/outlet/type) | `[ ]` |
+| B1 | Advanced filtering (beyond date/category/outlet/type) | `[x]` |
 | B2 | Data export (CSV/Excel download) | `[ ]` |
 | B3 | Authentication (login/protected routes) | `[ ]` |
-| B4 | Responsive / mobile design | `[ ]` |
+| B4 | Responsive / mobile design | `[x]` |
 | B5 | AI-generated insights from the data | `[ ]` |
 | B6 | Caching and performance optimizations (Redis, query cache) | `[ ]` |
 | B7 | Infrastructure automation (Docker Compose, CI/CD) | `[ ]` |
@@ -110,9 +110,9 @@ Last Updated: Phase 1 (Planning)
 | Phase 1 | Dataset inspection + assessment analysis + architecture planning | `[x]` |
 | Phase 2 | Project foundation + Polars ETL + PostgreSQL | `[x]` |
 | Phase 3 | FastAPI backend + analytics endpoints | `[x]` |
-| Phase 4 | React/Vite frontend + InsightDesk UI | `[ ]` |
-| Phase 5 | Dashboard + charts + filters + tables | `[ ]` |
-| Phase 6 | Reports/export + responsive design | `[ ]` |
+| Phase 4 | React/Vite frontend + InsightDesk UI | `[x]` |
+| Phase 5 | Dashboard + charts + filters + tables | `[x]` |
+| Phase 6 | Reports/export + responsive design | `[x]` |
 | Phase 7 | Performance testing and optimization | `[ ]` |
 | Phase 8 | Deployment | `[ ]` |
 | Phase 9 | GitHub + README + final assessment verification | `[ ]` |

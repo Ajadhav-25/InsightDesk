@@ -1,41 +1,71 @@
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api";
+
 /**
- * InsightDesk — API service layer
- * All fetch calls to the FastAPI backend go through this file.
- * Base URL is configured via Vite env variable VITE_API_BASE_URL.
- * During local development, Vite proxies /api → http://localhost:8000.
+ * Helper to build query strings from filter objects, skipping null/undefined/empty
  */
-
-const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ''
-
-async function apiFetch(path, params = {}) {
-  const url = new URL(`${BASE_URL}${path}`, window.location.origin)
-  Object.entries(params).forEach(([k, v]) => {
-    if (v !== undefined && v !== null && v !== '') {
-      url.searchParams.set(k, v)
+export const buildQueryString = (filters = {}) => {
+  const params = new URLSearchParams();
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      params.append(key, value);
     }
-  })
+  });
+  const qs = params.toString();
+  return qs ? `?${qs}` : "";
+};
 
-  const res = await fetch(url.toString())
-  if (!res.ok) {
-    throw new Error(`API error ${res.status} for ${path}`)
-  }
-  return res.json()
-}
+export const fetchDashboardSummary = async (filters) => {
+  const res = await fetch(`${BASE_URL}/dashboard/summary${buildQueryString(filters)}`);
+  if (!res.ok) throw new Error("Failed to fetch dashboard summary");
+  return res.json();
+};
 
-// ─── Dashboard ────────────────────────────────────────────────────────────────
-export const fetchSummary = (filters) =>
-  apiFetch('/api/dashboard/summary', filters)
+export const fetchRevenueTrend = async (filters) => {
+  const res = await fetch(`${BASE_URL}/analytics/revenue-trend${buildQueryString(filters)}`);
+  if (!res.ok) throw new Error("Failed to fetch revenue trend");
+  return res.json();
+};
 
-// ─── Analytics ────────────────────────────────────────────────────────────────
-export const fetchRevenueTrend   = (filters) => apiFetch('/api/analytics/revenue-trend', filters)
-export const fetchOutlets        = (filters) => apiFetch('/api/analytics/outlets', filters)
-export const fetchCategories     = (filters) => apiFetch('/api/analytics/categories', filters)
-export const fetchOrderTypes     = (filters) => apiFetch('/api/analytics/order-types', filters)
-export const fetchProducts       = (filters) => apiFetch('/api/analytics/products', filters)
-export const fetchSettlement     = (filters) => apiFetch('/api/analytics/settlement', filters)
+export const fetchOutlets = async (filters) => {
+  const res = await fetch(`${BASE_URL}/analytics/outlets${buildQueryString(filters)}`);
+  if (!res.ok) throw new Error("Failed to fetch outlets");
+  return res.json();
+};
 
-// ─── Orders (paginated) ───────────────────────────────────────────────────────
-export const fetchOrders = (params) => apiFetch('/api/orders', params)
+export const fetchCategories = async (filters) => {
+  const res = await fetch(`${BASE_URL}/analytics/categories${buildQueryString(filters)}`);
+  if (!res.ok) throw new Error("Failed to fetch categories");
+  return res.json();
+};
 
-// ─── Filters ──────────────────────────────────────────────────────────────────
-export const fetchFilters = () => apiFetch('/api/filters')
+export const fetchOrderTypes = async (filters) => {
+  const res = await fetch(`${BASE_URL}/analytics/order-types${buildQueryString(filters)}`);
+  if (!res.ok) throw new Error("Failed to fetch order types");
+  return res.json();
+};
+
+export const fetchProducts = async (filters, sortBy = 'revenue', limit = 10) => {
+  const params = { ...filters, sort_by: sortBy, limit };
+  const res = await fetch(`${BASE_URL}/analytics/products${buildQueryString(params)}`);
+  if (!res.ok) throw new Error("Failed to fetch products");
+  return res.json();
+};
+
+export const fetchSettlements = async (filters) => {
+  const res = await fetch(`${BASE_URL}/analytics/settlement${buildQueryString(filters)}`);
+  if (!res.ok) throw new Error("Failed to fetch settlements");
+  return res.json();
+};
+
+export const fetchOrders = async (filters, page = 1, limit = 25) => {
+  const params = { ...filters, page, limit };
+  const res = await fetch(`${BASE_URL}/orders${buildQueryString(params)}`);
+  if (!res.ok) throw new Error("Failed to fetch orders");
+  return res.json();
+};
+
+export const fetchFilters = async () => {
+  const res = await fetch(`${BASE_URL}/filters`);
+  if (!res.ok) throw new Error("Failed to fetch filter options");
+  return res.json();
+};
