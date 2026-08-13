@@ -1,0 +1,53 @@
+# ─── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+*.so
+.venv/
+venv/
+env/
+
+# ─── Environment / Secrets ──────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ─── Data files (dataset must NOT be committed to the public repo) ───────────────
+# Root-level Excel file
+data.xlsx
+# Any Excel/CSV inside the data/ directory
+data/*.xlsx
+data/*.csv
+data/*.xls
+# Keep .gitkeep so the data/ directory itself is tracked in Git
+!data/.gitkeep
+
+# ─── Node / Frontend ────────────────────────────────────────────────────────────
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+
+# ─── IDE / OS ───────────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ─── Logs ───────────────────────────────────────────────────────────────────────
+*.log
+logs/
+
+# ─── Assessment source files ─────────────────────────────────────────────────────
+# The .docx is for local reference only — not part of the deliverable codebase
+*.docx
