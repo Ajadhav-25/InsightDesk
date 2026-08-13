@@ -36,12 +36,11 @@ export default function GlobalFilters() {
   const currentOutlet = searchParams.get("outlet") || "";
   const currentCategory = searchParams.get("category") || "";
   const currentOrderType = searchParams.get("order_type") || "";
-  const currentBrand = searchParams.get("brand") || "";
   const currentSettlement = searchParams.get("settlement") || "";
   const startDate = searchParams.get("start_date") || "";
   const endDate = searchParams.get("end_date") || "";
 
-  const hasActiveFilters = currentOutlet || currentCategory || currentOrderType || currentBrand || currentSettlement || startDate || endDate;
+  const hasActiveFilters = currentOutlet || currentCategory || currentOrderType || currentSettlement || startDate || endDate;
 
   return (
     <div className="bg-white p-4 rounded-md border border-gray-200 shadow-sm mb-6 flex flex-wrap gap-4 items-end">
@@ -106,19 +105,6 @@ export default function GlobalFilters() {
         </select>
       </div>
 
-      {/* Brand */}
-      <div className="flex flex-col min-w-[150px]">
-        <label className="text-xs font-semibold text-gray-600 mb-1 uppercase">Brand</label>
-        <select 
-          value={currentBrand} 
-          onChange={(e) => handleFilterChange("brand", e.target.value)}
-          className="border border-gray-300 rounded px-3 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
-        >
-          <option value="">All Brands</option>
-          {filterOptions?.brands?.map(b => <option key={b} value={b}>{b}</option>)}
-        </select>
-      </div>
-      
       {/* Settlement */}
       <div className="flex flex-col min-w-[150px]">
         <label className="text-xs font-semibold text-gray-600 mb-1 uppercase">Settlement</label>
