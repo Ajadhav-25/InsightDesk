@@ -96,7 +96,6 @@ The Dashboard currently has the following filters:
 - Order Type
 - Settlement
 
-*(Note: The Brand filter was intentionally removed from the Dashboard.)*
 
 ## Performance Strategy
 
@@ -212,5 +211,5 @@ GitHub:
 ## Submission
 
 - **GitHub Repository**: [InsightDesk](https://github.com/Ajadhav-25/InsightDesk)
-- **Live Frontend**: [InsightDesk Dashboard](https://insight-desk-plum.vercel.app/)
-- **Live Backend**: [InsightDesk API](https://insightdesk-hmy6.onrender.com/)
+- **Live URL**: [InsightDesk Dashboard](https://insight-desk-plum.vercel.app/)
+
