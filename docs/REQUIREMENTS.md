@@ -16,7 +16,7 @@ Last Updated: Phase 1 (Planning)
 
 | # | Requirement | Implementation Location | Verification Method | Status |
 |---|-------------|------------------------|---------------------|--------|
-| M1.1 | Ingest and serve ~300K rows from Excel dataset | `etl/scripts/load_data.py` | ETL runs without error; rows match in DB | `[ ]` |
+| M1.1 | Ingest and serve ~300K rows from Excel dataset | `etl/scripts/load_data.py` | ETL runs without error; rows match in DB | `[x]` |
 | M1.2 | Decide and document data ingestion strategy (file/DB/ETL/cache) | `README.md` → Architecture section | README contains decision rationale | `[ ]` |
 | M1.3 | Explain trade-offs of chosen ingestion approach | `README.md` → Trade-offs section | Trade-offs documented in README | `[ ]` |
 | M1.4 | Browser must NOT receive all 300K raw records | FastAPI endpoints (aggregated responses) | API responses never return all rows unfiltered | `[ ]` |
@@ -59,7 +59,7 @@ Last Updated: Phase 1 (Planning)
 | # | Requirement | Implementation Location | Verification Method | Status |
 |---|-------------|------------------------|---------------------|--------|
 | M5.1 | Public GitHub repository | GitHub | Repo is public and accessible | `[ ]` |
-| M5.2 | Clean project structure | Root directory per spec | Directory matches planned structure | `[ ]` |
+| M5.2 | Clean project structure | Root directory per spec | Directory matches planned structure | `[x]` |
 | M5.3 | Meaningful commit history (not one giant commit) | Git log | Multiple descriptive commits throughout phases | `[ ]` |
 
 ---
@@ -107,8 +107,8 @@ Last Updated: Phase 1 (Planning)
 
 | Phase | Description | Status |
 |-------|-------------|--------|
-| Phase 1 | Dataset inspection + assessment analysis + architecture planning | `[/]` |
-| Phase 2 | Project foundation + Polars ETL + PostgreSQL | `[ ]` |
+| Phase 1 | Dataset inspection + assessment analysis + architecture planning | `[x]` |
+| Phase 2 | Project foundation + Polars ETL + PostgreSQL | `[x]` |
 | Phase 3 | FastAPI backend + analytics endpoints | `[ ]` |
 | Phase 4 | React/Vite frontend + InsightDesk UI | `[ ]` |
 | Phase 5 | Dashboard + charts + filters + tables | `[ ]` |
