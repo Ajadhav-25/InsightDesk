@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     )
 
     database_url: str = "postgresql://insightdesk:insightdesk_dev@localhost:5432/insightdesk"
-    allowed_origins: list[str] = ["http://localhost:5173"]
+    allowed_origins: list[str] = ["*"]
 
 
 settings = Settings()
